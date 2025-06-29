@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "connection string "  Microsoft.EntityFrameworkCore.SqlServer -ContextDir Context -OutputDir Models

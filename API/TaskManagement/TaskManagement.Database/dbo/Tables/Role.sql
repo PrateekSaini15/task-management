@@ -1,0 +1,9 @@
+﻿CREATE TABLE [Role]
+(
+	[Id] INT IDENTITY(1,1) NOT NULL,
+	[Name] VARCHAR(20) NOT NULL,
+	[IsActive] BIT NOT NULL,
+	[IsDelete] BIT NOT NULL,
+
+	CONSTRAINT [PK_Role_Id] PRIMARY KEY ([Id])
+)
