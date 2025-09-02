@@ -11,17 +11,19 @@ export class LocalStorageService {
 
     constructor(private encryptionService: EncryptionService) { }
 
-    setToken(token: string): void {
+    //#region Token
+    public setToken(token: string): void {
         this.setItem(this.KEYS.TOKEN, token);
     }
 
-    getToken(): string | null {
+    public getToken(): string | null {
         return this.getItem(this.KEYS.TOKEN);
     }
 
-    removeToken(): void {
+    public removeToken(): void {
         localStorage.removeItem(this.KEYS.TOKEN);
     }
+    //#endregion Token
 
     clear(): void {
         localStorage.clear();

@@ -9,6 +9,7 @@ import { Router } from "@angular/router";
 import { ErrorModel } from "models/error.model";
 import { SnackbarService } from "services/snackbar.service";
 import { LocalStorageService } from "services/local-storage.service";
+import { AuthService } from "services/auth.service";
 
 @Component({
     imports: [LoginFormComponent],
@@ -25,8 +26,15 @@ export class LoginPage {
         private readonly _httpClient: HttpClient,
         private readonly _router: Router,
         private readonly _localStorageService: LocalStorageService,
-        private readonly _snackbarService: SnackbarService
+        private readonly _snackbarService: SnackbarService,
+        private readonly _authService: AuthService
     ) { }
+
+    public ngOnInit(): void {
+      if (this._authService.isAuthenticated() == true) {
+        this._router.navigate(["/"]);
+      }
+    }
 
     public errors: ErrorModel[] = [];
 
