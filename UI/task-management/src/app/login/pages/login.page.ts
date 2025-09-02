@@ -8,6 +8,7 @@ import { environment } from "config/environment";
 import { Router } from "@angular/router";
 import { ErrorModel } from "models/error.model";
 import { SnackbarService } from "services/snackbar.service";
+import { LocalStorageService } from "services/local-storage.service";
 
 @Component({
     imports: [LoginFormComponent],
@@ -23,6 +24,7 @@ export class LoginPage {
     public constructor(
         private readonly _httpClient: HttpClient,
         private readonly _router: Router,
+        private readonly _localStorageService: LocalStorageService,
         private readonly _snackbarService: SnackbarService
     ) { }
 
@@ -36,7 +38,8 @@ export class LoginPage {
                 return;
             }
 
-            localStorage.setItem("token", response.data.token);
+            this._localStorageService.setToken(response.data.token);
+
             this._snackbarService.showSuccess("Welcome");
             this._router.navigate(["/"]);
         }
