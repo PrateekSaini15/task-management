@@ -1,0 +1,30 @@
+<section>
+    <form [formGroup]="form" class="row w-50 m-auto" (ngSubmit)="onFormSubmit();">
+        <fieldset>
+            <legend>Login</legend>
+            <div class="col-sm-12 mb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Username</mat-label>
+                    <input formControlName="username" matInput />
+                    <mat-error>
+                        <app-reactive-form-error [reactiveFormControl]="form.get('username')"></app-reactive-form-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-12 mb-3">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Password</mat-label>
+                    <input formControlName="password" matInput type="password" />
+                    <mat-error>
+                        <app-reactive-form-error [reactiveFormControl]="form.get('password')"></app-reactive-form-error>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-12">
+                <button type="submit" matButton class="w-100">Login</button>
+            </div>
+        </fieldset>
+    </form>
+</section>

@@ -5,10 +5,6 @@ namespace TaskManagement.Domain.Context;
 
 public partial class TaskManagementContext : DbContext
 {
-    public TaskManagementContext()
-    {
-    }
-
     public TaskManagementContext(DbContextOptions<TaskManagementContext> options)
         : base(options)
     {
@@ -17,9 +13,6 @@ public partial class TaskManagementContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=localhost,1433; Database=TaskManagement; User Id=sa; Password=Prateek@123; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

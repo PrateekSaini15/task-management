@@ -1,4 +1,4 @@
-<mat-sidenav-container>
+<mat-sidenav-container class="vh-100">
     <mat-sidenav mode="side" [opened]="menuOpen">
         <nav>
             <ul>
@@ -9,7 +9,8 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <app-header (menuButton)="onMenuButton();"></app-header>
-        Screen will come here
-        <router-outlet />
+        <main class="container">
+            <router-outlet />
+        </main>
     </mat-sidenav-content>
 </mat-sidenav-container>
