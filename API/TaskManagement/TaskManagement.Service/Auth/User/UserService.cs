@@ -75,5 +75,38 @@ namespace TaskManagement.Service.Auth.User
                 return response;
             }
         }
+
+        public async Task<ServiceResponse<ListResponseModel>> Get()
+        {
+            var response = new ServiceResponse<ListResponseModel>()
+            {
+                Data = new()
+            };
+
+            try
+            {
+                var users = await this._context.Users.Select(u => new ListItemModel()
+                {
+                    Id = u.Id,
+                    Name = $"{u.FirstName} {u.LastName}",
+                    Role = u.Roles.First().Name
+                }).ToListAsync();
+
+                response.Data.Users.AddRange(users);
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = "Internal Server Error";
+                response.ErrorMessage = ex.GetBaseException().Message;
+                response.StatusCode = HttpStatusCode.InternalServerError;
+
+                return response;
+            }
+        }
     }
 }

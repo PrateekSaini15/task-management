@@ -22,5 +22,13 @@ namespace TaskManagement.Api.Controllers.v1
 
             return response.CreateResponse();
         }
+
+        [HttpGet($"{baseUrl}")]
+        public async Task<IActionResult> Get()
+        {
+            var response = await this._userService.Get();
+
+            return response.CreateResponse();
+        }
     }
 }

@@ -1,5 +1,4 @@
-import { W } from "@angular/cdk/keycodes";
-import { CommonModule, JsonPipe } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { Component, input, output, SimpleChanges } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +17,7 @@ import { valueMatchValidator } from "validators/value-match.validator";
 @Component({
   selector: "app-user-add-form",
   templateUrl: "user-add-form.component.html",
-  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormErrorComponent, JsonPipe],
+  imports: [CommonModule, ReactiveFormsModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormErrorComponent],
 })
 export class UserAddFormComponent {
   public onSubmit = output<UserAddRequestModel>();

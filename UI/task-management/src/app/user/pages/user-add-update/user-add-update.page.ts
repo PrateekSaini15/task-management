@@ -39,7 +39,6 @@ export class UserAddUpdatePage {
       this._router.navigate(["/user"]);
     }
     catch (errorResponse: any) {
-      console.log(errorResponse);
       if (errorResponse.status == 0) {
         this._snackbarService.showError("Unexpected error occurred. Check console for more details");
         console.error(errorResponse);
