@@ -7,6 +7,8 @@ using TaskManagement.Api.Implementations;
 using TaskManagement.Domain.Context;
 using TaskManagement.Infrastructure.Configuration;
 using TaskManagement.Service.Auth.Login;
+using TaskManagement.Service.Auth.User;
+using TaskManagement.Service.Common.Dropdown;
 
 namespace TaskManagement.Api
 {
@@ -16,6 +18,7 @@ namespace TaskManagement.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
             builder.Services.AddCors(options => options.AddPolicy(name: "AllowedOrigins", builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()));
             builder.Services.AddEndpointsApiExplorer();
@@ -53,7 +56,10 @@ namespace TaskManagement.Api
             });
 
             builder.Services.AddSingleton<IAppConfiguration, AppConfiguration>();
+            builder.Services.AddScoped<ILoggedInUser, LoggedInUser>();
+            builder.Services.AddTransient<IDropdownService, DropdownService>();
             builder.Services.AddTransient<ILoginService, LoginService>();
+            builder.Services.AddTransient<IUserService, UserService>();
 
             var app = builder.Build();
 

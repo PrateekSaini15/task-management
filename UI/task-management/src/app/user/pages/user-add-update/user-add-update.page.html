@@ -1,0 +1,19 @@
+<section class="d-flex">
+  <div class="flex-grow-1">
+    <h2>User Add</h2>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
+        <li class="breadcrumb-item"><a routerLink="..">User</a></li>
+        <li class="breadcrumb-item active" aria-current="page">User Add</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="d-flex align-items-center">
+    <a routerLink=".." matButton><mat-icon>arrow_back</mat-icon>Back</a>
+  </div>
+</section>
+
+<section>
+  <app-user-add-form [serverSideErrors]="errors" (onSubmit)="onSubmit($event);"></app-user-add-form>
+</section>
