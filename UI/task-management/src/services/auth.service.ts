@@ -1,11 +1,7 @@
 import { Injectable } from "@angular/core";
 import { LocalStorageService } from "./local-storage.service";
-import { BehaviorSubject, firstValueFrom, Observable } from "rxjs";
-import { LoginRequestModel } from "app/login/models/login-request.model";
-import { ErrorModel } from "models/error.model";
+import { BehaviorSubject, Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { ApiResponseModel } from "models/api-response.model";
-import { LoginResponseModel } from "app/login/models/login-response.model";
 import { JwtPayloadModel } from "models/jwt-payload.model";
 import { environment } from "config/environment";
 import { SnackbarService } from "./snackbar.service";

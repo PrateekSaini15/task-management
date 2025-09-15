@@ -65,7 +65,9 @@ namespace TaskManagement.Service.Auth.Login
 
                 var claims = new[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Name, $"{user.FirstName} {user.LastName}")
+                    new Claim(JwtRegisteredClaimNames.Name, $"{user.FirstName} {user.LastName}"),
+                    new Claim("UserId", user.Id.ToString()),
+                    new Claim("RoleIds", string.Join(",", user.Roles.Select(r => r.Id)))
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this._appConfiguration.JwtConfig.Key));

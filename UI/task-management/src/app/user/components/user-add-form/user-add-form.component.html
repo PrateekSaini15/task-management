@@ -1,0 +1,83 @@
+<form [formGroup]="form" class="mx-auto" (ngSubmit)="onFormSubmit()">
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>First Name</mat-label>
+      <input formControlName="firstName" matInput>
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('firstName')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Last Name</mat-label>
+      <input formControlName="lastName" matInput>
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('lastName')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Username</mat-label>
+      <input formControlName="username" matInput autocomplete="off">
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('username')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput>
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('email')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="roleId">
+        @for (ddlRole of ddlModel.ddlRole; track ddlRole) {
+        <mat-option [value]="ddlRole.value">{{ddlRole.text}}</mat-option>
+        }
+      </mat-select>
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('roleId')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Password</mat-label>
+      <input formControlName="password" type="password" matInput autocomplete="off">
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('password')"></app-reactive-form-error>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mb-3">
+    <mat-form-field class="w-100">
+      <mat-label>Confirm Password</mat-label>
+      <input formControlName="confirmPassword" type="password" matInput autocomplete="off">
+      <mat-error>
+        <app-reactive-form-error [reactiveFormControl]="form.get('confirmPassword')"></app-reactive-form-error>
+        <ng-container *ngIf="form.get('confirmPassword')?.errors?.['value-match']">
+          Password do not match
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button matButton="filled" class="w-100">Add User</button>
+  </div>
+
+</form>

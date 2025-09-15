@@ -3,14 +3,20 @@
 // Bootstrap core functions and variables (required for mixins)
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
-@import "bootstrap/scss/maps";  
+@import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
-@import "bootstrap/scss/utilities/api"; 
+@import "bootstrap/scss/utilities/api";
+
+// Theming (important for active colors!)
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/type";
 
 // Selective imports from bootstrap
 @import "bootstrap/scss/containers";
 @import "bootstrap/scss/grid";
+@import "bootstrap/scss/breadcrumb";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -33,7 +39,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #f8d7da !important;
 }
 .snackbar-error .mdc-button__label {
-    color: #6f151d; 
+    color: #6f151d;
 }
 //#endregion Mat Snackbar styles
 

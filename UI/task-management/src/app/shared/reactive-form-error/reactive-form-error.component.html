@@ -1,9 +1,9 @@
 @if (reactiveFormControl?.invalid && (reactiveFormControl?.dirty || reactiveFormControl?.touched)) {
-    <ng-container *ngIf="reactiveFormControl?.errors?.['required']">Required</ng-container>
-    <ng-container
-        *ngIf="reactiveFormControl?.errors?.['server-side-error']">
-        @for(error of reactiveFormControl?.errors?.['server-side-error']; track error) {
-            {{error}}
-        }
-    </ng-container>
+<ng-container *ngIf="reactiveFormControl?.errors?.['required']">Required</ng-container>
+<ng-container *ngIf="reactiveFormControl?.errors?.['email']">Invalid email</ng-container>
+<ng-container *ngIf="reactiveFormControl?.errors?.['server-side-error']">
+    @for(error of reactiveFormControl?.errors?.['server-side-error']; track error) {
+    {{error}}
+    }
+</ng-container>
 }

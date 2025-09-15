@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate {
                 return false;
             }
 
-            let jwtPayload = JSON.parse(payloadString) as JwtPayloadModel;
+            const jwtPayload = JSON.parse(payloadString) as JwtPayloadModel;
 
             const now = Math.floor(Date.now() / 1000);
 
