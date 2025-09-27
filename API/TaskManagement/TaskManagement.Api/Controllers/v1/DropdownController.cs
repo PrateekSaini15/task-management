@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Api.ExtensionMethods;
 using TaskManagement.Service.Common.Dropdown;
 
 namespace TaskManagement.Api.Controllers.v1
 {
     [ApiController]
+    [Authorize]
     public class DropdownController : ControllerBase
     {
         private const string baseUrl = "api/v1/dropdown";

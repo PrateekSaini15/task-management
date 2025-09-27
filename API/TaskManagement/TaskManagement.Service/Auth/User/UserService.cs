@@ -51,7 +51,7 @@ namespace TaskManagement.Service.Auth.User
                     Email = model.Email,
                     Password = model.Password,
                     Roles = new List<DomainModel.Role>() { role },
-                    CreatedBy = 1,
+                    CreatedBy = this._loggedInUser.UserId,
                     CreatedDate = DateTime.Now
                 };
 

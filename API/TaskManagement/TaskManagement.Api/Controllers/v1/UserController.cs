@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TaskManagement.Api.ExtensionMethods;
 using TaskManagement.Service.Auth.User;
 
 namespace TaskManagement.Api.Controllers.v1
 {
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private const string baseUrl = "api/v1/user";
