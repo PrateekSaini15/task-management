@@ -37,5 +37,9 @@ public partial class User
 
     public virtual User? ModifiedByNavigation { get; set; }
 
+    public virtual ICollection<Project> ProjectCreatedByNavigations { get; set; } = new List<Project>();
+
+    public virtual ICollection<Project> ProjectModifiedByNavigations { get; set; } = new List<Project>();
+
     public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
 }

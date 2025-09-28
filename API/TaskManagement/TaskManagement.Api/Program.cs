@@ -9,6 +9,7 @@ using TaskManagement.Infrastructure.Configuration;
 using TaskManagement.Service.Auth.Login;
 using TaskManagement.Service.Auth.User;
 using TaskManagement.Service.Common.Dropdown;
+using TaskManagement.Service.Project;
 
 namespace TaskManagement.Api
 {
@@ -60,6 +61,7 @@ namespace TaskManagement.Api
             builder.Services.AddTransient<IDropdownService, DropdownService>();
             builder.Services.AddTransient<ILoginService, LoginService>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IProjectService, ProjectService>();
 
             var app = builder.Build();
 

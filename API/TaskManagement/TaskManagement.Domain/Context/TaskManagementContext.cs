@@ -5,10 +5,16 @@ namespace TaskManagement.Domain.Context;
 
 public partial class TaskManagementContext : DbContext
 {
+    public TaskManagementContext()
+    {
+    }
+
     public TaskManagementContext(DbContextOptions<TaskManagementContext> options)
         : base(options)
     {
     }
+
+    public virtual DbSet<Project> Projects { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -16,6 +22,30 @@ public partial class TaskManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Project>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Project_Id");
+
+            entity.ToTable("Project");
+
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.Name)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProjectCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Project_CreatedBy_User_Id");
+
+            entity.HasOne(d => d.ModifiedByNavigation).WithMany(p => p.ProjectModifiedByNavigations)
+                .HasForeignKey(d => d.ModifiedBy)
+                .HasConstraintName("FK_Project_ModifiedBy_User_Id");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Role_Id");
