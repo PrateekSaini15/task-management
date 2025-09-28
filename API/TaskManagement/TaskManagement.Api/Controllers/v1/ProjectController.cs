@@ -9,7 +9,6 @@ namespace TaskManagement.Api.Controllers.v1
     [Authorize]
     public class ProjectController : ControllerBase
     {
-
         private const string baseUrl = "api/v1/project";
         private readonly IProjectService _projectService;
 
@@ -18,7 +17,7 @@ namespace TaskManagement.Api.Controllers.v1
             this._projectService = projectService;
         }
 
-        [HttpPost(baseUrl)]
+        [HttpPost($"{baseUrl}")]
         public async Task<IActionResult> Add(AddRequestModel model)
         {
             var response = await this._projectService.Add(model);
