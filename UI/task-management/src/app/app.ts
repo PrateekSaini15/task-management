@@ -4,10 +4,11 @@ import { HeaderComponent } from './layout/header/header.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { LoaderComponent } from './layout/loader/loader.component';
+import { SidenavComponent } from './layout/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, LoaderComponent, MatSidenavModule, MatListModule],
+  imports: [RouterOutlet, HeaderComponent, LoaderComponent, SidenavComponent, MatSidenavModule, MatListModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

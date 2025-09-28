@@ -1,0 +1,26 @@
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 220px;
+  border-right: 1px solid #ddd;
+
+  .mat-list-item {
+    border-radius: 5px;
+    margin-bottom: 4px;
+
+    &.active {
+      background-color: #0d6efd;
+      color: #fff;
+
+      mat-icon {
+        color: #fff;
+      }
+    }
+
+    mat-icon {
+      color: #555;
+    }
+  }
+}

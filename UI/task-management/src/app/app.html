@@ -1,11 +1,6 @@
 <mat-sidenav-container class="vh-100">
     <mat-sidenav mode="side" [opened]="menuOpen">
-        <nav>
-            <ul>
-                <li><a matButton>Home</a></li>
-                <li><a matButton>User</a></li>
-            </ul>
-        </nav>
+       <app-sidenav></app-sidenav> 
     </mat-sidenav>
     <mat-sidenav-content>
         <app-header (menuButton)="onMenuButton();"></app-header>

@@ -1,0 +1,68 @@
+<div class="p-3">
+  <h5 class="mb-4">Task Manager</h5>
+  <mat-nav-list>
+
+    <!-- Projects Group -->
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>work_outline</mat-icon>
+          <span class="ms-2">Projects</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <a mat-list-item routerLink="/projects" routerLinkActive="active">
+        <mat-icon>folder_open</mat-icon>
+        <span class="ms-2">All Projects</span>
+      </a>
+      <a mat-list-item routerLink="/projects/tasks" routerLinkActive="active">
+        <mat-icon>assignment</mat-icon>
+        <span class="ms-2">Tasks</span>
+      </a>
+    </mat-expansion-panel>
+
+    <!-- Teams & Users -->
+    <mat-expansion-panel class="mt-2">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>groups</mat-icon>
+          <span class="ms-2">Teams</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <a mat-list-item routerLink="/teams" routerLinkActive="active">
+        <mat-icon>group_work</mat-icon>
+        <span class="ms-2">Manage Teams</span>
+      </a>
+      <a mat-list-item routerLink="/user" routerLinkActive="active">
+        <mat-icon>person</mat-icon>
+        <span class="ms-2">Users</span>
+      </a>
+    </mat-expansion-panel>
+
+    <!-- Analytics -->
+    <a mat-list-item routerLink="/analytics" routerLinkActive="active" class="mt-2">
+      <mat-icon>bar_chart</mat-icon>
+      <span class="ms-2">Analytics</span>
+    </a>
+
+    <!-- Notifications -->
+    <a mat-list-item routerLink="/notifications" routerLinkActive="active" class="mt-2">
+      <mat-icon>notifications</mat-icon>
+      <span class="ms-2">Notifications</span>
+    </a>
+
+    <!-- Billing / Subscription -->
+    <a mat-list-item routerLink="/billing" routerLinkActive="active" class="mt-2">
+      <mat-icon>credit_card</mat-icon>
+      <span class="ms-2">Billing</span>
+    </a>
+
+    <!-- Settings -->
+    <a mat-list-item routerLink="/settings" routerLinkActive="active" class="mt-2">
+      <mat-icon>settings</mat-icon>
+      <span class="ms-2">Settings</span>
+    </a>
+
+  </mat-nav-list>
+</div>
