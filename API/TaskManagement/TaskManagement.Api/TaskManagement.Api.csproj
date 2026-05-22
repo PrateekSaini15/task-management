@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>f2234439-d405-4e9f-8b72-c3f266e0e75b</UserSecretsId>
-  </PropertyGroup>
+  </PropertyGroup
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.17">

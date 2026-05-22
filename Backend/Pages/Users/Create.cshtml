@@ -1,0 +1,48 @@
+@page
+@model TaskManagement.Pages.Users.CreateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<section class="page-header">
+  <div class="page-header__heading">
+    <h1>Create User</h1>
+  </div>
+  <div class="page-header__actions">
+    <a href="/users">Back</a>
+  </div>
+</section>
+<section>
+  <form method="post" id="CreateUserForm" novalidate class="user-form">
+    <p> Please complete all required (*) fields </p>
+    <div class="mb-3">
+      <label asp-for="FirstName" class="form-label">First Name *:</label>
+      <input type="text" asp-for="FirstName" class="form-control" />
+      <p id="FirstNameError" class="invalid-feedback"></p>
+      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "FirstName")
+    </div>
+    
+    <div class="mb-3">
+      <label asp-for="LastName" class="form-label">Last Name:</label>
+      <input type="text" asp-for="LastName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+      <label asp-for="Email" class="form-label">Email *:</label>
+      <input type="email" asp-for="Email" class="form-control" />
+      <p id="EmailError" class="invalid-feedback"></p>
+      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Email")
+    </div>
+
+    <div class="mb-3">
+      <label asp-for="Username" class="form-label">Username *:</label>
+      <input type="text" asp-for="Username" class="form-control" />
+      <p id="UsernameError" class="invalid-feedback"></p>
+      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Username")
+    </div>
+
+    <section>
+      <div>
+        <button type="submit">Create User</button>
+      </div>
+    </section>
+  </form>
+</section>

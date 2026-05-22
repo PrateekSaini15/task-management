@@ -1,0 +1,9 @@
+@model string;
+
+@if (ViewData.ModelState[Model] is not null)
+{
+  @foreach(var error in ViewData.ModelState[Model].Errors)
+  {
+    <div class="invalid-feedback">@error.ErrorMessage</div>
+  }
+}
