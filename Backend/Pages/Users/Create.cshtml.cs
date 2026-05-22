@@ -1,19 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TaskManagement.Pages.Users;
+namespace Backend.Pages.Users;
 
 public class CreateModel : PageModel
 {
+    private readonly string _connectionString;
+
+    public CreateModel(IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Default");
+
+        if (connectionString is null)
+        {
+            throw new InvalidOperationException("Default connection string is not present in the appsetting.json file.");
+        }
+
+        this._connectionString = connectionString;
+    }
+
     [BindProperty]
     public string? FirstName { get; set; }
 
+    [BindProperty]
     public string? LastName {get; set; }
 
+    [BindProperty]
     public string? Username {get; set;}
 
+    [BindProperty]
     public string? Email {get; set;}
 
     public async Task<IActionResult> OnGetAsync()
@@ -46,6 +65,36 @@ public class CreateModel : PageModel
         if (modelStateIsValid == false)
         {
             return Page();
+        }
+
+        var queryString = "INSERT INTO [User] ([FirstName], [LastName], [Username], [Email], [Password], [RoleId])"
+            + " VALUES(@firstName, @lastName, @username, @email, @password, @roleId);";
+
+        using (SqlConnection connection = new(this._connectionString))
+        {
+            using SqlCommand command = new(queryString, connection);
+
+            command.Parameters.Add("@firstName", SqlDbType.VarChar, 100).Value = this.FirstName;
+            command.Parameters.Add("@lastName", SqlDbType.VarChar, 100).Value = this.LastName;
+            command.Parameters.Add("@username", SqlDbType.VarChar, 100).Value = this.Username;
+            command.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = this.Email;
+            command.Parameters.Add("@password", SqlDbType.VarChar, 100).Value = "123456";
+            command.Parameters.Add("@roleId", SqlDbType.Int).Value = 2;
+
+            try
+            {
+                connection.Open();
+                command.ExecuteReader();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.GetBaseException().Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetType());
+                Console.WriteLine(ex.GetBaseException().Message);
+            }
         }
 
         return RedirectToPage("./Index");
