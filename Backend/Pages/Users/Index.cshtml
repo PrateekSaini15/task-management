@@ -1,4 +1,5 @@
 @page
+@model Pages.Users.IndexModel
 
 <section class="page-header">
   <div class="page-header__heading">
@@ -10,7 +11,7 @@
 </section>
 
 <section>
-  <table>
+  <table class="table user-table">
     <thead>
       <tr>
         <th>S No</th>
@@ -21,17 +22,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td> 1 </td>
-        <td> Prateek Saini </td>
-        <td> PSaini </td>
-        <td> p@saini.com </td>
-        <td>
-          <div>
-            <button>Edit</button>
-          </div>
-        </td>
-      </tr>
+      @foreach(var row in Model.Rows)
+      {
+        <tr>
+          <td> 1 </td>
+          <td> @row.Name </td>
+          <td> @row.Username </td>
+          <td> @row.Email </td>
+          <td>
+            <div>
+              <a href="#">Edit</a>
+            </div>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 <section>
