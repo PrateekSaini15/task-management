@@ -61,7 +61,7 @@ async function validateEmailAvailable() {
     return false;
   }
 
-  const response = await fetch(`/Users/Create?handler=IsEmailAvailable&username=${encodeURIComponent(value)}`);
+  const response = await fetch(`/Users/Create?handler=IsEmailAvailable&email=${encodeURIComponent(value)}`);
 
   const result = await response.json();
 
