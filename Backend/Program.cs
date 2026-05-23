@@ -1,7 +1,17 @@
+using Backend.Infrastructure.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("Default");
+
+if (connectionString is null)
+{
+    throw new InvalidOperationException("Default connnection string is not provided");
+}
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSingleton(new DbConnectionFactory(connectionString));
 
 var app = builder.Build();
 

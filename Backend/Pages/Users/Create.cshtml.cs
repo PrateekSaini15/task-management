@@ -1,3 +1,4 @@
+using Backend.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -9,18 +10,11 @@ namespace Backend.Pages.Users;
 
 public class CreateModel : PageModel
 {
-    private readonly string _connectionString;
+    private readonly DbConnectionFactory _dbConnectionFactory;
 
-    public CreateModel(IConfiguration configuration)
+    public CreateModel(DbConnectionFactory dbConnectionFactory)
     {
-        var connectionString = configuration.GetConnectionString("Default");
-
-        if (connectionString is null)
-        {
-            throw new InvalidOperationException("Default connection string is not present in the appsetting.json file.");
-        }
-
-        this._connectionString = connectionString;
+        this._dbConnectionFactory = dbConnectionFactory;
     }
 
     [BindProperty]
@@ -70,7 +64,7 @@ public class CreateModel : PageModel
         var queryString = "INSERT INTO [User] ([FirstName], [LastName], [Username], [Email], [Password], [RoleId])"
             + " VALUES(@firstName, @lastName, @username, @email, @password, @roleId);";
 
-        using (SqlConnection connection = new(this._connectionString))
+        using (SqlConnection connection = this._dbConnectionFactory.GetConnection())
         {
             using SqlCommand command = new(queryString, connection);
 
@@ -83,8 +77,8 @@ public class CreateModel : PageModel
 
             try
             {
-                connection.Open();
-                command.ExecuteReader();
+                await connection.OpenAsync();
+                await command.ExecuteNonQueryAsync();
             }
             catch (SqlException ex)
             {

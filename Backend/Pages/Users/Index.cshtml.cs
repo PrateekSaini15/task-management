@@ -1,3 +1,4 @@
+using Backend.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -8,18 +9,11 @@ namespace Backend.Pages.Users;
 
 public class IndexModel : PageModel
 {
-    private readonly string _connectionString;
+    private readonly DbConnectionFactory _dbConnectionFactory;
 
-    public IndexModel(IConfiguration configuration)
+    public IndexModel(DbConnectionFactory dbConnectionFactory)
     {
-        var connectionString = configuration.GetConnectionString("Default");
-
-        if (connectionString is null)
-        {
-            throw new InvalidOperationException("Default connection string is not present in appsetting.json file.");
-        }
-
-        this._connectionString = connectionString;
+        this._dbConnectionFactory = dbConnectionFactory;
     }
 
     public List<UserRow> Rows {get; set;} = new();
@@ -27,18 +21,18 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         const string queryString = "SELECT [Id], [FirstName], [LastName], [Username], [Email]"
-            + "FROM [User];";
+            + " FROM [User];";
 
-        using (SqlConnection connection = new(this._connectionString))
+        using (SqlConnection connection = this._dbConnectionFactory.GetConnection())
         {
             SqlCommand command = new(queryString, connection);
 
             try
             {
-                connection.Open();
+                await connection.OpenAsync();
                 SqlDataReader reader = command.ExecuteReader();
 
-                while(reader.Read())
+                while(await reader.ReadAsync())
                 {
                     this.Rows.Add(new UserRow(reader.GetInt32(0), $"{reader.GetString(1)} {reader.GetString(2)}", reader.GetString(3), reader.GetString(4)));
                 }
