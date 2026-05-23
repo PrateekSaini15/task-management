@@ -16,6 +16,7 @@ The user management module allow admin to:
 | Last Name  | String    | No       |             |
 | Username   | String    | Yes      | Unique      |
 | Email      | String    | Yes      | Unique      |
+| Password   | String    | Yes      |             |
 | RoleId     | Int       | Yes      | FK Role(Id) |
 
 ### Table: Role
@@ -73,12 +74,14 @@ To create new user in the system.
 | Submit Button | Send request to create new user |
 
 ### Form
-| Field      | Type   | Validation                    |
-|------------|--------|-------------------------------|
-| First Name | String | Required                      |
-| Last Name  | String |                               |
-| Username   | String | Required, Unique              |
-| Email      | String | Required, Unique, Valid Email |
+| Field              | Type   | Validation                    |
+|--------------------|--------|-------------------------------|
+| First Name         | String | Required                      |
+| Last Name          | String |                               |
+| Username           | String | Required, Unique              |
+| Email              | String | Required, Unique, Valid Email |
+| Password           | String | Required                      |
+| Confirm Password   | String | Required, Must match password |
 
 ### Flow
 1. From user list screen click on the create user button.
