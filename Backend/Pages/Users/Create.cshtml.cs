@@ -21,13 +21,19 @@ public class CreateModel : PageModel
     public string? FirstName { get; set; }
 
     [BindProperty]
-    public string? LastName {get; set; }
+    public string? LastName { get; set; }
 
     [BindProperty]
-    public string? Username {get; set;}
+    public string? Username { get; set; }
 
     [BindProperty]
-    public string? Email {get; set;}
+    public string? Email { get; set; }
+
+    [BindProperty]
+    public string? Password { get; set; }
+
+    [BindProperty]
+    public string? ConfirmPassword { get; set; }
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -72,6 +78,24 @@ public class CreateModel : PageModel
             modelStateIsValid = false;
         }
 
+        if (string.IsNullOrEmpty(this.Password) == true)
+        {
+            ModelState.AddModelError(nameof(this.Password), "Required");
+            modelStateIsValid = false;
+        }
+
+        if (string.IsNullOrEmpty(this.ConfirmPassword) == true)
+        {
+            ModelState.AddModelError(nameof(this.ConfirmPassword), "Required");
+            modelStateIsValid = false;
+        }
+
+        if (this.Password != this.ConfirmPassword)
+        {
+            ModelState.AddModelError(nameof(this.ConfirmPassword), "Password is not matching");
+            modelStateIsValid = false;
+        }
+
         if (modelStateIsValid == false)
         {
             return Page();
@@ -88,7 +112,7 @@ public class CreateModel : PageModel
             command.Parameters.Add("@lastName", SqlDbType.VarChar, 100).Value = this.LastName;
             command.Parameters.Add("@username", SqlDbType.VarChar, 100).Value = this.Username;
             command.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = this.Email;
-            command.Parameters.Add("@password", SqlDbType.VarChar, 100).Value = "123456";
+            command.Parameters.Add("@password", SqlDbType.VarChar, 100).Value = this.Password;
             command.Parameters.Add("@roleId", SqlDbType.Int).Value = 2;
 
             try

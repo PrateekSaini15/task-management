@@ -4,10 +4,14 @@ const form = document.querySelector("#CreateUserForm");
 const firstName = form.querySelector("#FirstName");
 const username = form.querySelector("#Username");
 const email = form.querySelector("#Email");
+const password = form.querySelector("#Password");
+const confirmPassword = form.querySelector("#ConfirmPassword");
 
 const firstNameError = form.querySelector("#FirstNameError");
 const emailError = form.querySelector("#EmailError");
 const usernameError = form.querySelector("#UsernameError");
+const passwordError = form.querySelector("#PasswordError");
+const confirmPasswordError = form.querySelector("#ConfirmPasswordError");
 
 async function validateUsername() {
   const value = username.value.trim();
@@ -75,6 +79,25 @@ async function validateEmailAvailable() {
   return true;
 }
 
+function validateConfirmPassword() {
+  const passwordValue = password.value.trim();
+  const confirmPasswordValue = confirmPassword.value.trim();
+
+  if (confirmPasswordValue === "") {
+    confirmPasswordError.innerText = "Required";
+    return false;
+  }
+
+  if (confirmPasswordValue !== passwordValue) {
+    confirmPasswordError.innerText = "Password is not matching";
+    return false;
+  }
+
+  confirmPasswordError.innerText = "";
+
+  return true;
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -84,6 +107,8 @@ form.addEventListener("submit", async (event) => {
   isValid = validateRequiredField(email, emailError) && isValid;
   isValid = validateRequiredField(username, usernameError) && isValid;
   isValid = await validateUsername() && isValid;
+  isValid = validateRequiredField(password, passwordError) && isValid;
+  isValid = validateConfirmPassword() && isValid;
 
   if (isValid == false) {
     return;
@@ -106,4 +131,10 @@ email.addEventListener("input", () => {
 });
 email.addEventListener("blur", () => {
   validateEmailAvailable();
+});
+password.addEventListener("input", () => {
+  validateRequiredField(password, passwordError);
+});
+confirmPassword.addEventListener("input", () => {
+  validateConfirmPassword();
 });
