@@ -34,7 +34,7 @@ public class CreateModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
     {
         bool modelStateIsValid = true;
 
@@ -50,9 +50,25 @@ public class CreateModel : PageModel
             modelStateIsValid = false;
         }
 
+        var isUsernameAvailable = await this.IsUsernameAvailableAsync(this.Username, cancellationToken);
+
+        if (isUsernameAvailable == false)
+        {
+            ModelState.AddModelError(nameof(this.Username), "Username not available");
+            modelStateIsValid = false;
+        }
+
         if (string.IsNullOrEmpty(this.Email) == true)
         {
             ModelState.AddModelError(nameof(this.Email), "Required");
+            modelStateIsValid = false;
+        }
+
+        var isEmailAvailable = await this.IsEmailAvailableAsync(this.Email, cancellationToken);
+
+        if (isEmailAvailable == false)
+        {
+            ModelState.AddModelError(nameof(this.Email), "Email not available");
             modelStateIsValid = false;
         }
 
@@ -94,13 +110,81 @@ public class CreateModel : PageModel
         return RedirectToPage("./Index");
     }
 
-    public async Task<JsonResult> OnGetCheckUsernameAsync(string username)
+    public async Task<JsonResult> OnGetIsUsernameAvailableAsync(string username, CancellationToken cancellationToken)
     {
-        if (username == "Prateek")
-        {
-            return new JsonResult(new { IsAvailable = false});
-        }
+        bool isAvailable = await this.IsUsernameAvailableAsync(username, cancellationToken);
 
-        return new JsonResult( new { IsAvailable = true });
+        return new JsonResult( new { IsAvailable = isAvailable});
+    }
+
+    private async Task<bool> IsUsernameAvailableAsync(string username, CancellationToken cancellationToken)
+    {
+        bool isAvailable = false;
+        var queryString = "SELECT  Top(1) 1"
+            + " FROM [User] WHERE [Username]  = @username;";
+
+        using (SqlConnection connection = this._dbConnectionFactory.GetConnection())
+        {
+            SqlCommand command = new(queryString, connection);
+
+            command.Parameters.Add("@username", SqlDbType.VarChar, 100).Value = username;
+
+            try
+            {
+                await connection.OpenAsync();
+
+                var result = await command.ExecuteScalarAsync(cancellationToken);
+
+                isAvailable = result == null;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.GetBaseException().Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetType());
+                Console.WriteLine(ex.GetBaseException().Message);
+            }
+
+            return isAvailable;
+        }
+    }
+
+    public async Task<JsonResult> OnGetIsEmailAvailableAsync(string email, CancellationToken cancellationToken)
+    {
+        bool isAvailable = await this.IsEmailAvailableAsync(email, cancellationToken);
+
+        return new JsonResult(new { IsAvailable = isAvailable });
+    }
+
+    private async Task<bool> IsEmailAvailableAsync(string email, CancellationToken cancellationToken)
+    {
+        bool isAvailable = false;
+
+        var queryString = "SELECT TOP(1) 1"
+            + " FROM [User] WHERE [Email] = @email";
+
+        using(SqlConnection connection = this._dbConnectionFactory.GetConnection())
+        {
+            SqlCommand command = new(queryString, connection);
+
+            command.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = email;
+
+            try
+            {
+                await connection.OpenAsync();
+
+                var result = await command.ExecuteScalarAsync(cancellationToken);
+
+                isAvailable = result == null;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.GetBaseException().Message);
+            }
+
+            return isAvailable;
+        }
     }
 }

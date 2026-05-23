@@ -17,7 +17,7 @@ async function validateUsername() {
     return false;
   }
 
-  const response = await fetch(`/Users/Create?handler=CheckUsername&username=${encodeURIComponent(value)}`);
+  const response = await fetch(`/Users/Create?handler=IsUsernameAvailable&username=${encodeURIComponent(value)}`);
   const result = await response.json();
 
   if (result.isAvailable == false) {
@@ -30,6 +30,51 @@ async function validateUsername() {
   return true;
 }
 
+function validateEmail() {
+
+  const value = email.value.trim();
+
+  if (value === "") {
+    emailError.innerText = "Required";
+    return false;
+  }
+
+  if (value.includes("@") == false || value.includes(".") == false) {
+    emailError.innerText = "Incorrect email format";
+    return false;
+  }
+
+  emailError.innerText = "";
+
+  return true;
+}
+
+async function validateEmailAvailable() {
+
+  const value = email.value.trim();
+
+  if (value === "") {
+    return false;
+  }
+
+  if (value.includes("@") == false || value.includes(".") == false) {
+    return false;
+  }
+
+  const response = await fetch(`/Users/Create?handler=IsEmailAvailable&username=${encodeURIComponent(value)}`);
+
+  const result = await response.json();
+
+  if (result.isAvailable == false) {
+    emailError.innerText = "Email is not available";
+    return false;
+  }
+
+  emailError.innerText = "";
+
+  return true;
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -38,6 +83,7 @@ form.addEventListener("submit", async (event) => {
   isValid = validateRequiredField(firstName, firstNameError) && isValid;
   isValid = validateRequiredField(email, emailError) && isValid;
   isValid = validateRequiredField(username, usernameError) && isValid;
+  isValid = await validateUsername() && isValid;
 
   if (isValid == false) {
     return;
@@ -56,5 +102,8 @@ username.addEventListener("blur", () => {
   validateUsername();
 });
 email.addEventListener("input", () => {
-  validateRequiredField(email, emailError);
+  validateEmail();
+});
+email.addEventListener("blur", () => {
+  validateEmailAvailable();
 });
