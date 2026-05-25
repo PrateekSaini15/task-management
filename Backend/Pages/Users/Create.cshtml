@@ -2,61 +2,63 @@
 @model Backend.Pages.Users.CreateModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-<section class="page-header">
-  <div class="page-header__heading">
-    <h1>Create User</h1>
-  </div>
-  <div class="page-header__actions">
-    <a href="/users">Back</a>
-  </div>
-</section>
-<section>
-  <form method="post" id="CreateUserForm" novalidate class="user-form">
-    <p> Please complete all required (*) fields </p>
-    <div class="mb-3">
-      <label asp-for="FirstName" class="form-label">First Name *:</label>
-      <input type="text" asp-for="FirstName" class="form-control" />
-      <p id="FirstNameError" class="invalid-feedback"></p>
-      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "FirstName")
+<div class="form-page-container">
+  <section class="page-header">
+    <div class="page-header__heading">
+      <h1>Create User</h1>
     </div>
-    
-    <div class="mb-3">
-      <label asp-for="LastName" class="form-label">Last Name:</label>
-      <input type="text" asp-for="LastName" class="form-control" />
+    <div class="page-header__actions">
+      <a href="/users">Back</a>
     </div>
-
-    <div class="mb-3">
-      <label asp-for="Email" class="form-label">Email *:</label>
-      <input type="email" asp-for="Email" class="form-control" />
-      <p id="EmailError" class="invalid-feedback"></p>
-      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Email")
-    </div>
-
-    <div class="mb-3">
-      <label asp-for="Username" class="form-label">Username *:</label>
-      <input type="text" autocomplete="username" asp-for="Username" class="form-control" />
-      <p id="UsernameError" class="invalid-feedback"></p>
-      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Username")
-    </div>
-    
-    <div class="mb-3">
-      <label asp-for="Password" class="form-lable">Password *: </label>
-      <input type="password" autocomplete="new-password" asp-for="Password" class="form-control" />
-      <p id="PasswordError" class="invalid-feedback"></p>
-      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Password")
-    </div>
-
-    <div class="mb-3">
-      <label asp-for="ConfirmPassword" class="form-label">Confirm Password *: </label>
-      <input type="password" autocomplete="new-password" asp-for="ConfirmPassword" class="form-control" />
-      <p id="ConfirmPasswordError" class="invalid-feedback"></p>
-      @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "ConfirmPassword")
-    </div>
-
-    <section>
-      <div>
-        <button type="submit">Create User</button>
+  </section>
+  <section>
+    <form method="post" id="CreateUserForm" novalidate class="stack">
+      <p> Please complete all required (*) fields </p>
+      <div >
+        <label asp-for="FirstName" class="form-label">First Name *:</label>
+        <input type="text" asp-for="FirstName" class="form-control" />
+        <p id="FirstNameError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "FirstName")
       </div>
-    </section>
-  </form>
-</section>
+      
+      <div >
+        <label asp-for="LastName" class="form-label">Last Name:</label>
+        <input type="text" asp-for="LastName" class="form-control" />
+      </div>
+
+      <div >
+        <label asp-for="Email" class="form-label">Email *:</label>
+        <input type="email" asp-for="Email" class="form-control" />
+        <p id="EmailError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Email")
+      </div>
+
+      <div >
+        <label asp-for="Username" class="form-label">Username *:</label>
+        <input type="text" autocomplete="username" asp-for="Username" class="form-control" />
+        <p id="UsernameError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Username")
+      </div>
+      
+      <div >
+        <label asp-for="Password" class="form-lable">Password *: </label>
+        <input type="password" autocomplete="new-password" asp-for="Password" class="form-control" />
+        <p id="PasswordError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Password")
+      </div>
+
+      <div >
+        <label asp-for="ConfirmPassword" class="form-label">Confirm Password *: </label>
+        <input type="password" autocomplete="new-password" asp-for="ConfirmPassword" class="form-control" />
+        <p id="ConfirmPasswordError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "ConfirmPassword")
+      </div>
+
+      <section>
+        <div>
+          <button type="submit" class="button">Create User</button>
+        </div>
+      </section>
+    </form>
+  </section>
+</div>
