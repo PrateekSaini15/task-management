@@ -24,13 +24,14 @@ async function validateUsername() {
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    const errorMessage = "Username not available";
-    username.setCustomValidity(errorMessage);
-    usernameError.innerText = errorMessage;
+    username.classList.add("invalid");
+    username.classList.remove("valid");
+    usernameError.innerText = "Username not available"
     return false;
   }
 
-  username.setCustomValidity("");
+  username.classList.add("valid");
+  username.classList.remove("invalid");
   usernameError.innerText = "";
 
   return true;
@@ -41,20 +42,21 @@ function validateEmail() {
   const value = email.value.trim();
 
   if (value === "") {
-    const errorMessage = "Required";
-    email.setCustomValidity(errorMessage)
-    emailError.innerText = errorMessage;
+    email.classList.add("invalid");
+    email.classList.remove("valid");
+    emailError.innerText = "Required"
     return false;
   }
 
   if (value.includes("@") == false || value.includes(".") == false) {
-    const errorMessage = "Incorrect email format";
-    email.setCustomValidity(errorMessage);
-    emailError.innerText = errorMessage;
+    email.classList.add("invalid");
+    email.classList.remove("valid");
+    emailError.innerText = "Incorrect email format"
     return false;
   }
 
-  email.setCustomValidity("");
+  email.classList.add("valid");
+  email.classList.remove("invalid");
   emailError.innerText = "";
 
   return true;
@@ -77,13 +79,14 @@ async function validateEmailAvailable() {
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    const errorMessage = "Email is not available";
-    email.setCustomValidity(errorMessage);
-    emailError.innerText = errorMessage;
+    email.classList.add("invalid");
+    email.classList.remove("valid");
+    emailError.innerText = "Email is not available"
     return false;
   }
 
-  email.setCustomValidity("");
+  email.classList.add("valid");
+  email.classList.remove("invalid");
   emailError.innerText = "";
 
   return true;
@@ -94,20 +97,21 @@ function validateConfirmPassword() {
   const confirmPasswordValue = confirmPassword.value.trim();
 
   if (confirmPasswordValue === "") {
-    const errorMessage = "Required";
-    confirmPassword.setCustomValidity(errorMessage);
-    confirmPasswordError.innerText = errorMessage;
+    confirmPassword.classList.add("valid");
+    confirmPassword.classList.remove("invalid");
+    confirmPasswordError.innerText = "Required"
     return false;
   }
 
   if (confirmPasswordValue !== passwordValue) {
-    const errorMessage = "Password is not matching";
-    confirmPassword.setCustomValidity(errorMessage);
-    confirmPasswordError.innerText = errorMessage;
+    confirmPassword.classList.add("invalid");
+    confirmPassword.classList.remove("valid");
+    confirmPasswordError.innerText = "Password is not matching"
     return false;
   }
 
-  confirmPassword.setCustomValidity("");
+  confirmPassword.classList.add("valid");
+  confirmPassword.classList.remove("invalid");
   confirmPasswordError.innerText = "";
 
   return true;

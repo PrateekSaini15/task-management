@@ -11,6 +11,8 @@
   --color-primary: #8316c5;
   --color-on-primary: #ffffff;
   --color-border: #e5e7eb;
+  --color-success: #198754;
+  --color-on-success: #fff;
   --color-warning: #ffc107;
   --color-on-warning: #000;
   --color-danger: #dc3545;
@@ -235,10 +237,6 @@ Components
   outline: 1px solid var(--color-primary);
 }
 
-.form-control.invalid {
-  border: 1px solid red;
-}
-
 .form-label {
   display: block;
   margin-bottom: 0.5em;
@@ -250,11 +248,15 @@ Components
   margin-top: 0.25em;
 }
 
-.form-control:invalid {
+.form-control.valid {
+  outline: 1px solid var(--color-success);
+}
+
+.form-control.invalid {
  outline: 1px solid var(--color-danger);
 }
 
-.form-control:focus:invalid {
+.form-control.invalid:focus {
   outline: 1px solid var(--color-warning);
 }
 
