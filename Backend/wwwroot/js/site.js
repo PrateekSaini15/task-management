@@ -5,9 +5,11 @@ function validateRequiredField(inputElement, errorElement) {
   const isValid = inputElement.value.trim() !== "";
 
   if (isValid == false) {
+    inputElement.setCustomValidity("Required");
     errorElement.innerText = "Required";
   }
   else {
+    inputElement.setCustomValidity("");
     errorElement.innerText = "";
   }
   

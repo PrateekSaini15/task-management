@@ -11,6 +11,10 @@
   --color-primary: #8316c5;
   --color-on-primary: #ffffff;
   --color-border: #e5e7eb;
+  --color-warning: #ffc107;
+  --color-on-warning: #000;
+  --color-danger: #dc3545;
+  --color-on-danger: #fff;
 
   /* TYPOGRAPHY */
   --font-sans: Inter, sans-serif;
@@ -98,6 +102,10 @@ button,
 textarea,
 select {
     font: inherit;
+}
+
+input:focus {
+  outline: none
 }
 
 /* Remove animation */
@@ -218,9 +226,13 @@ Components
 .form-control {
   font-size: 1rem;
   padding: 0.25em 0.5em;
-  border: 1px solid black;
+  border: none;
   border-radius: 0.25rem;
   width: 100%;
+}
+
+.form-control:focus-visible {
+  outline: 1px solid var(--color-primary);
 }
 
 .form-control.invalid {
@@ -238,12 +250,21 @@ Components
   margin-top: 0.25em;
 }
 
+.form-control:invalid {
+ outline: 1px solid var(--color-danger);
+}
+
+.form-control:focus:invalid {
+  outline: 1px solid var(--color-warning);
+}
+
 /* Page Header */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 
 /* Table */
 .table-wrapper {

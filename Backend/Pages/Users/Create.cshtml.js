@@ -17,7 +17,6 @@ async function validateUsername() {
   const value = username.value.trim();
 
   if (value === "") {
-    usernameError.innerText = "Required";
     return false;
   }
 
@@ -25,10 +24,13 @@ async function validateUsername() {
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    usernameError.innerText = "Username not available";
+    const errorMessage = "Username not available";
+    username.setCustomValidity(errorMessage);
+    usernameError.innerText = errorMessage;
     return false;
   }
 
+  username.setCustomValidity("");
   usernameError.innerText = "";
 
   return true;
@@ -39,15 +41,20 @@ function validateEmail() {
   const value = email.value.trim();
 
   if (value === "") {
-    emailError.innerText = "Required";
+    const errorMessage = "Required";
+    email.setCustomValidity(errorMessage)
+    emailError.innerText = errorMessage;
     return false;
   }
 
   if (value.includes("@") == false || value.includes(".") == false) {
-    emailError.innerText = "Incorrect email format";
+    const errorMessage = "Incorrect email format";
+    email.setCustomValidity(errorMessage);
+    emailError.innerText = errorMessage;
     return false;
   }
 
+  email.setCustomValidity("");
   emailError.innerText = "";
 
   return true;
@@ -70,10 +77,13 @@ async function validateEmailAvailable() {
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    emailError.innerText = "Email is not available";
+    const errorMessage = "Email is not available";
+    email.setCustomValidity(errorMessage);
+    emailError.innerText = errorMessage;
     return false;
   }
 
+  email.setCustomValidity("");
   emailError.innerText = "";
 
   return true;
@@ -84,15 +94,20 @@ function validateConfirmPassword() {
   const confirmPasswordValue = confirmPassword.value.trim();
 
   if (confirmPasswordValue === "") {
-    confirmPasswordError.innerText = "Required";
+    const errorMessage = "Required";
+    confirmPassword.setCustomValidity(errorMessage);
+    confirmPasswordError.innerText = errorMessage;
     return false;
   }
 
   if (confirmPasswordValue !== passwordValue) {
-    confirmPasswordError.innerText = "Password is not matching";
+    const errorMessage = "Password is not matching";
+    confirmPassword.setCustomValidity(errorMessage);
+    confirmPasswordError.innerText = errorMessage;
     return false;
   }
 
+  confirmPassword.setCustomValidity("");
   confirmPasswordError.innerText = "";
 
   return true;
