@@ -27,6 +27,8 @@ The user management module allow admin to:
 
 ## Business Rule
 - Only one admin user
+- username will be case insensitive
+- email address will be case insensitive
 
 ## Permissions
 | Role        | View | Create | Update | Activate/Deactivate |
