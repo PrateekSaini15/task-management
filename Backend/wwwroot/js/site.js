@@ -1,19 +1,31 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-function validateRequiredField(inputElement, errorElement) {
-  const isValid = inputElement.value.trim() !== "";
-
+function setFieldState(fieldElement, errorElement, isValid, errorMessage = "") {
   if (isValid == false) {
-    inputElement.classList.add("invalid");
-    inputElement.classList.remove("valid");
-    errorElement.innerText = "Required";
+    fieldElement.classList.add("invalid");
+    fieldElement.classList.remove("valid");
+    errorElement.innerText = errorMessage;
   }
   else {
-    inputElement.classList.add("valid");
-    inputElement.classList.remove("invalid");
+    fieldElement.classList.add("valid");
+    fieldElement.classList.remove("invalid");
     errorElement.innerText = "";
   }
-  
-  return isValid;
+}
+
+function debounce(callback, delay) {
+  let timeoutId = null;
+
+  return function (...args) {
+    clearTimeout(timeoutId);
+
+    return new Promise((resolve, reject) => {
+      timeoutId = setTimeout(() => {
+        Promise.resolve(callback(...args))
+          .then(resolve)
+          .catch(reject);
+      }, delay);
+    });
+  }
 }

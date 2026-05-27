@@ -13,109 +13,167 @@ const usernameError = form.querySelector("#UsernameError");
 const passwordError = form.querySelector("#PasswordError");
 const confirmPasswordError = form.querySelector("#ConfirmPasswordError");
 
-async function validateUsername() {
+function getFirstNameValidationError() {
+  const value = firstName.value.trim();
+
+  if (value === "") {
+    return "Required";
+  }
+
+  return null;
+}
+
+firstName.addEventListener("input", () => {
+  const error = getFirstNameValidationError();
+
+  if (error !== null) {
+    setFieldState(firstName, firstNameError, false, error);
+    return;
+  }
+
+  setFieldState(firstName, firstNameError, true);
+});
+
+function getUsernameValidationError() {
   const value = username.value.trim();
 
   if (value === "") {
-    return false;
+    return "Required";
   }
+
+  return null;
+}
+
+async function getUsernameValidationErrorAsync() {
+  const value = username.value.trim();
 
   const response = await fetch(`/Users/Create?handler=IsUsernameAvailable&username=${encodeURIComponent(value)}`);
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    username.classList.add("invalid");
-    username.classList.remove("valid");
-    usernameError.innerText = "Username not available"
-    return false;
+    return "Username not available"
   }
 
-  username.classList.add("valid");
-  username.classList.remove("invalid");
-  usernameError.innerText = "";
-
-  return true;
+  return null;
 }
 
-function validateEmail() {
+const debounceUsernameValidationAsync = debounce(getUsernameValidationErrorAsync, 500);
+
+username.addEventListener("input", async () => {
+  const error = getUsernameValidationError();
+
+  if (error !== null) {
+    setFieldState(username, usernameError, false, error);
+    return;
+  }
+
+  const errorAsync = await debounceUsernameValidationAsync();
+
+  if (errorAsync !== null) {
+    setFieldState(username, usernameError, false, errorAsync);
+    return;
+  }
+
+  setFieldState(username, usernameError, true);
+});
+
+function getEmailValidationError() {
 
   const value = email.value.trim();
 
   if (value === "") {
-    email.classList.add("invalid");
-    email.classList.remove("valid");
-    emailError.innerText = "Required"
-    return false;
+    return "Required";
   }
 
   if (value.includes("@") == false || value.includes(".") == false) {
-    email.classList.add("invalid");
-    email.classList.remove("valid");
-    emailError.innerText = "Incorrect email format"
-    return false;
+    return "Incorrect email format"
   }
 
-  email.classList.add("valid");
-  email.classList.remove("invalid");
-  emailError.innerText = "";
-
-  return true;
+  return null;
 }
 
-async function validateEmailAvailable() {
+async function getEmailValidationErrorAsync() {
 
   const value = email.value.trim();
-
-  if (value === "") {
-    return false;
-  }
-
-  if (value.includes("@") == false || value.includes(".") == false) {
-    return false;
-  }
 
   const response = await fetch(`/Users/Create?handler=IsEmailAvailable&email=${encodeURIComponent(value)}`);
 
   const result = await response.json();
 
   if (result.isAvailable == false) {
-    email.classList.add("invalid");
-    email.classList.remove("valid");
-    emailError.innerText = "Email is not available"
-    return false;
+    return "Email is not available"
   }
 
-  email.classList.add("valid");
-  email.classList.remove("invalid");
-  emailError.innerText = "";
-
-  return true;
+  return null;
 }
 
-function validateConfirmPassword() {
+const debounceEmailValidationAsync = debounce(getEmailValidationErrorAsync, 500); 
+
+email.addEventListener("input", async () => {
+  const error = getEmailValidationError();
+
+  if (error !== null) {
+    setFieldState(email, emailError, false, error);
+    return;
+  }
+
+  const errorAsync = await debounceEmailValidationAsync();
+
+  if (errorAsync !== null) {
+    setFieldState(email, emailError, false, errorAsync);
+    return;
+  }
+
+  setFieldState(email, emailError, true);
+
+});
+
+function getPasswordValidationError() {
+  const value = password.value.trim();
+
+  if (value === "") {
+    return "Required";
+  }
+
+  return null;
+}
+
+password.addEventListener("input", () => {
+  const error = getPasswordValidationError();
+
+  if (error !== null) {
+    setFieldState(password, passwordError, false, error);
+    return;
+  }
+
+  setFieldState(password, passwordError, true);
+});
+
+function getConfirmPasswordValidationError() {
   const passwordValue = password.value.trim();
   const confirmPasswordValue = confirmPassword.value.trim();
 
   if (confirmPasswordValue === "") {
-    confirmPassword.classList.add("valid");
-    confirmPassword.classList.remove("invalid");
-    confirmPasswordError.innerText = "Required"
-    return false;
+    return "Required"
   }
 
   if (confirmPasswordValue !== passwordValue) {
-    confirmPassword.classList.add("invalid");
-    confirmPassword.classList.remove("valid");
-    confirmPasswordError.innerText = "Password is not matching"
-    return false;
+    return "Password is not matching"
   }
 
-  confirmPassword.classList.add("valid");
-  confirmPassword.classList.remove("invalid");
-  confirmPasswordError.innerText = "";
-
-  return true;
+  return null;
 }
+
+confirmPassword.addEventListener("input", () => {
+  const error = getConfirmPasswordValidationError();
+
+  if (error !== null) {
+    setFieldState(confirmPassword, confirmPasswordError, false, error);
+    return;
+  }
+
+  setFieldState(confirmPassword, confirmPasswordError, true);
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -134,26 +192,4 @@ form.addEventListener("submit", async (event) => {
   }
 
   form.submit();
-});
-
-firstName.addEventListener("input", () => {
-  validateRequiredField(firstName, firstNameError);
-});
-username.addEventListener("input", () => {
-  validateRequiredField(username, usernameError);
-});
-username.addEventListener("blur", () => {
-  validateUsername();
-});
-email.addEventListener("input", () => {
-  validateEmail();
-});
-email.addEventListener("blur", () => {
-  validateEmailAvailable();
-});
-password.addEventListener("input", () => {
-  validateRequiredField(password, passwordError);
-});
-confirmPassword.addEventListener("input", () => {
-  validateConfirmPassword();
 });
