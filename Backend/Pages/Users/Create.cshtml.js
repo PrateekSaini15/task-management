@@ -180,12 +180,40 @@ form.addEventListener("submit", async (event) => {
 
   let isValid = true;
 
-  isValid = validateRequiredField(firstName, firstNameError) && isValid;
-  isValid = validateRequiredField(email, emailError) && isValid;
-  isValid = validateRequiredField(username, usernameError) && isValid;
-  isValid = await validateUsername() && isValid;
-  isValid = validateRequiredField(password, passwordError) && isValid;
-  isValid = validateConfirmPassword() && isValid;
+  const firstNameErrorMessage = getFirstNameValidationError();
+
+  if (firstNameErrorMessage !== null) {
+    setFieldState(firstName, firstNameError, false, firstNameErrorMessage);
+    isValid = false;
+  }
+
+  const emailErrorMessage = getEmailValidationError();
+
+  if (emailErrorMessage !== null) {
+    setFieldState(email, emailError, false, emailErrorMessage);
+    isValid = false;
+  }
+
+  const usernameErrorMessage = getUsernameValidationError();
+
+  if (usernameErrorMessage !== null) {
+    setFieldState(username, usernameError, false, usernameErrorMessage);
+    isValid = false;
+  }
+
+  const passwordErrorMessage = getPasswordValidationError();
+
+  if (passwordErrorMessage !== null) {
+    setFieldState(password, passwordError, false, passwordErrorMessage);
+    isValid = false;
+  }
+
+  const confirmPasswordErrorMessage = getConfirmPasswordValidationError();
+
+  if (confirmPasswordErrorMessage !== null) {
+    setFieldState(confirmPassword, confirmPasswordError, false, confirmPasswordErrorMessage);
+    isValid = false;
+  }
 
   if (isValid == false) {
     return;
