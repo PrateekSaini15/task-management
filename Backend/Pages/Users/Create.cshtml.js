@@ -1,21 +1,18 @@
 
 const form = document.querySelector("#CreateUserForm");
 
-const firstName = form.querySelector("#FirstName");
-const username = form.querySelector("#Username");
-const email = form.querySelector("#Email");
-const password = form.querySelector("#Password");
-const confirmPassword = form.querySelector("#ConfirmPassword");
+function field(name, options = {}) {
+  return {
+    input: form.querySelector(`#${name}`),
+    error: form.querySelector(`#${name}Error`),
+    validate: options.validate,
+    remote: options.remote ?? null,
+    controller: null,
+    requestId: 0
+  };
+}
 
-const firstNameError = form.querySelector("#FirstNameError");
-const emailError = form.querySelector("#EmailError");
-const usernameError = form.querySelector("#UsernameError");
-const passwordError = form.querySelector("#PasswordError");
-const confirmPasswordError = form.querySelector("#ConfirmPasswordError");
-
-function getFirstNameValidationError() {
-  const value = firstName.value.trim();
-
+function validateFirstName(value) {
   if (value === "") {
     return "Required";
   }
@@ -23,20 +20,7 @@ function getFirstNameValidationError() {
   return null;
 }
 
-firstName.addEventListener("input", () => {
-  const error = getFirstNameValidationError();
-
-  if (error !== null) {
-    setFieldState(firstName, firstNameError, false, error);
-    return;
-  }
-
-  setFieldState(firstName, firstNameError, true);
-});
-
-function getUsernameValidationError() {
-  const value = username.value.trim();
-
+function validateUsername(value) {
   if (value === "") {
     return "Required";
   }
@@ -44,43 +28,14 @@ function getUsernameValidationError() {
   return null;
 }
 
-async function getUsernameValidationErrorAsync() {
-  const value = username.value.trim();
-
-  const response = await fetch(`/Users/Create?handler=IsUsernameAvailable&username=${encodeURIComponent(value)}`);
+async function checkUsername(value, signal) {
+  const response = await fetch(`/Users/Create?handler=IsUsernameAvailable&username=${encodeURIComponent(value)}`, { signal });
   const result = await response.json();
 
-  if (result.isAvailable == false) {
-    return "Username not available"
-  }
-
-  return null;
+  return result.isAvailable == true ? null : "Username not available";
 }
 
-const debounceUsernameValidationAsync = debounce(getUsernameValidationErrorAsync, 500);
-
-username.addEventListener("input", async () => {
-  const error = getUsernameValidationError();
-
-  if (error !== null) {
-    setFieldState(username, usernameError, false, error);
-    return;
-  }
-
-  const errorAsync = await debounceUsernameValidationAsync();
-
-  if (errorAsync !== null) {
-    setFieldState(username, usernameError, false, errorAsync);
-    return;
-  }
-
-  setFieldState(username, usernameError, true);
-});
-
-function getEmailValidationError() {
-
-  const value = email.value.trim();
-
+function validateEmail(value) {
   if (value === "") {
     return "Required";
   }
@@ -92,45 +47,14 @@ function getEmailValidationError() {
   return null;
 }
 
-async function getEmailValidationErrorAsync() {
-
-  const value = email.value.trim();
-
-  const response = await fetch(`/Users/Create?handler=IsEmailAvailable&email=${encodeURIComponent(value)}`);
-
+async function checkEmail(value, signal) {
+  const response = await fetch(`/Users/Create?handler=IsEmailAvailable&email=${encodeURIComponent(value)}`, { signal });
   const result = await response.json();
 
-  if (result.isAvailable == false) {
-    return "Email is not available"
-  }
-
-  return null;
+  return result.isAvailable == true ? null : "Email not available";
 }
 
-const debounceEmailValidationAsync = debounce(getEmailValidationErrorAsync, 500); 
-
-email.addEventListener("input", async () => {
-  const error = getEmailValidationError();
-
-  if (error !== null) {
-    setFieldState(email, emailError, false, error);
-    return;
-  }
-
-  const errorAsync = await debounceEmailValidationAsync();
-
-  if (errorAsync !== null) {
-    setFieldState(email, emailError, false, errorAsync);
-    return;
-  }
-
-  setFieldState(email, emailError, true);
-
-});
-
-function getPasswordValidationError() {
-  const value = password.value.trim();
-
+function validatePassword(value) {
   if (value === "") {
     return "Required";
   }
@@ -138,21 +62,7 @@ function getPasswordValidationError() {
   return null;
 }
 
-password.addEventListener("input", () => {
-  const error = getPasswordValidationError();
-
-  if (error !== null) {
-    setFieldState(password, passwordError, false, error);
-    return;
-  }
-
-  setFieldState(password, passwordError, true);
-});
-
-function getConfirmPasswordValidationError() {
-  const passwordValue = password.value.trim();
-  const confirmPasswordValue = confirmPassword.value.trim();
-
+function validateConfirmPassword(confirmPasswordValue, passwordValue) {
   if (confirmPasswordValue === "") {
     return "Required"
   }
@@ -164,60 +74,97 @@ function getConfirmPasswordValidationError() {
   return null;
 }
 
-confirmPassword.addEventListener("input", () => {
-  const error = getConfirmPasswordValidationError();
+const password = field("Password", {
+  validate: validatePassword
+});
+
+const fields = [
+  field("FirstName", {
+    validate: validateFirstName
+  }),
+
+  field("Email", {
+    validate: validateEmail,
+    remote: debounce(checkEmail, 500)
+  }),
+  
+  field("Username", {
+    validate: validateUsername,
+    remote: debounce(checkUsername, 500)
+  }),
+
+  password,
+
+  field("ConfirmPassword", {
+    validate: (value) => {
+      return validateConfirmPassword(value, password.input.value.trim());
+    }
+  }),
+];
+
+async function validateField(field) {
+  const value = field.input.value.trim();
+
+  const error = field.validate(value);
+
+  setFieldState(field.input, field.error, error);
 
   if (error !== null) {
-    setFieldState(confirmPassword, confirmPasswordError, false, error);
-    return;
+    return false;
   }
 
-  setFieldState(confirmPassword, confirmPasswordError, true);
-});
+  if (field.remote == null) {
+    return true;
+  }
+
+  field.controller?.abort();
+  field.controller = new AbortController();
+  const requestId = ++field.requestId;
+
+  try {
+
+    const error = await field.remote(value, field.controller.signal);
+
+    if (requestId !== field.requestId) {
+      return false;
+    }
+
+    setFieldState(field.input, field.error, error);
+
+    return error === null;
+  }
+  catch(error) {
+    if (error.name === "AbortError") {
+      return;
+    }
+    console.error(error);
+    setFieldState(field.input, field.error, "Validation request failed");
+  }
+}
+
+for(const field of fields) {
+  field.input.addEventListener("input", () => {
+    validateField(field);
+  });
+}
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   let isValid = true;
 
-  const firstNameErrorMessage = getFirstNameValidationError();
-
-  if (firstNameErrorMessage !== null) {
-    setFieldState(firstName, firstNameError, false, firstNameErrorMessage);
-    isValid = false;
-  }
-
-  const emailErrorMessage = getEmailValidationError();
-
-  if (emailErrorMessage !== null) {
-    setFieldState(email, emailError, false, emailErrorMessage);
-    isValid = false;
-  }
-
-  const usernameErrorMessage = getUsernameValidationError();
-
-  if (usernameErrorMessage !== null) {
-    setFieldState(username, usernameError, false, usernameErrorMessage);
-    isValid = false;
-  }
-
-  const passwordErrorMessage = getPasswordValidationError();
-
-  if (passwordErrorMessage !== null) {
-    setFieldState(password, passwordError, false, passwordErrorMessage);
-    isValid = false;
-  }
-
-  const confirmPasswordErrorMessage = getConfirmPasswordValidationError();
-
-  if (confirmPasswordErrorMessage !== null) {
-    setFieldState(confirmPassword, confirmPasswordError, false, confirmPasswordErrorMessage);
-    isValid = false;
+  for(const field of fields) {
+    const valid = await validateField(field);
+    
+    if (valid == false) {
+      isValid = false;
+    }
   }
 
   if (isValid == false) {
     return;
   }
 
-  form.submit();
+  event.submit();
 });
+

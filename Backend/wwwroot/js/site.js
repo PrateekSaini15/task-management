@@ -1,8 +1,8 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-function setFieldState(fieldElement, errorElement, isValid, errorMessage = "") {
-  if (isValid == false) {
+function setFieldState(fieldElement, errorElement, errorMessage) {
+  if (errorMessage !== null) {
     fieldElement.classList.add("invalid");
     fieldElement.classList.remove("valid");
     errorElement.innerText = errorMessage;
