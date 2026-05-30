@@ -24,6 +24,8 @@
       <div >
         <label asp-for="LastName" class="form-label">Last Name:</label>
         <input type="text" asp-for="LastName" class="form-control" />
+        <p id="LastNameError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "LastName")
       </div>
 
       <div >

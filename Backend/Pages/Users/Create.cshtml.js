@@ -17,12 +17,32 @@ function validateFirstName(value) {
     return "Required";
   }
 
+  if (value.length > 100) {
+    return "Max length is 100 characters only";
+  }
+
+  return null;
+}
+
+function validateLastName(value) {
+  if (value === "") {
+    return null;
+  }
+
+  if (value.length > 100) {
+    return "Max length  is 100 characters only";
+  }
+
   return null;
 }
 
 function validateUsername(value) {
   if (value === "") {
     return "Required";
+  }
+
+  if (value.length > 100) {
+    return "Max length is 100 characters only";
   }
 
   return null;
@@ -44,6 +64,10 @@ function validateEmail(value) {
     return "Incorrect email format"
   }
 
+  if (value.length > 100) {
+    return "Max length is 100 characters only";
+  }
+
   return null;
 }
 
@@ -57,6 +81,10 @@ async function checkEmail(value, signal) {
 function validatePassword(value) {
   if (value === "") {
     return "Required";
+  }
+
+  if (value.length > 100) {
+    return "Max length is 100 characters only";
   }
 
   return null;
@@ -81,6 +109,10 @@ const password = field("Password", {
 const fields = [
   field("FirstName", {
     validate: validateFirstName
+  }),
+
+  field("LastName", {
+    validate: validateLastName
   }),
 
   field("Email", {

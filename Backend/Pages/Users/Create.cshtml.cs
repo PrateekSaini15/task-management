@@ -42,61 +42,66 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
     {
-        bool modelStateIsValid = true;
-
         if (string.IsNullOrEmpty(this.FirstName) == true)
         {
             ModelState.AddModelError(nameof(this.FirstName), "Required");
-            modelStateIsValid = false;
+        }
+        else if(this.FirstName.Length > 100)
+        {
+            ModelState.AddModelError(nameof(this.FirstName), "Max length is 100 characters only");
+        }
+
+        if (string.IsNullOrEmpty(this.LastName) == false && this.LastName.Length > 100)
+        {
+            ModelState.AddModelError(nameof(this.LastName), "Max length is 100 characters only");
         }
 
         if (string.IsNullOrEmpty(this.Username) == true )
         {
             ModelState.AddModelError(nameof(this.Username), "Required");
-            modelStateIsValid = false;
         }
-
-        var isUsernameAvailable = await this.IsUsernameAvailableAsync(this.Username, cancellationToken);
-
-        if (isUsernameAvailable == false)
+        else if (this.Username.Length > 100)
+        {
+            ModelState.AddModelError(nameof(this.Username), "Max length is 100 characters only");
+        }
+        else if (await this.IsUsernameAvailableAsync(this.Username, cancellationToken) == false)
         {
             ModelState.AddModelError(nameof(this.Username), "Username not available");
-            modelStateIsValid = false;
         }
 
         if (string.IsNullOrEmpty(this.Email) == true)
         {
             ModelState.AddModelError(nameof(this.Email), "Required");
-            modelStateIsValid = false;
         }
-
-        var isEmailAvailable = await this.IsEmailAvailableAsync(this.Email, cancellationToken);
-
-        if (isEmailAvailable == false)
+        else if (this.Email.Length > 100)
+        {
+            ModelState.AddModelError(nameof(this.Email), "Max length is 100 characters only");
+        }
+        else if(await this.IsEmailAvailableAsync(this.Email, cancellationToken) == false)
         {
             ModelState.AddModelError(nameof(this.Email), "Email not available");
-            modelStateIsValid = false;
         }
 
         if (string.IsNullOrEmpty(this.Password) == true)
         {
             ModelState.AddModelError(nameof(this.Password), "Required");
-            modelStateIsValid = false;
+        }
+        else if (this.Password.Length > 100)
+        {
+            ModelState.AddModelError(nameof(this.Password), "Max length is 100 characters only");
         }
 
         if (string.IsNullOrEmpty(this.ConfirmPassword) == true)
         {
             ModelState.AddModelError(nameof(this.ConfirmPassword), "Required");
-            modelStateIsValid = false;
         }
 
         if (this.Password != this.ConfirmPassword)
         {
             ModelState.AddModelError(nameof(this.ConfirmPassword), "Password is not matching");
-            modelStateIsValid = false;
         }
 
-        if (modelStateIsValid == false)
+        if (ModelState.IsValid == false)
         {
             return Page();
         }
@@ -123,11 +128,15 @@ public class CreateModel : PageModel
             catch (SqlException ex)
             {
                 Console.WriteLine(ex.GetBaseException().Message);
+                ModelState.AddModelError("", "Failed to create user due to database error");
+                return Page();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.GetType());
                 Console.WriteLine(ex.GetBaseException().Message);
+                ModelState.AddModelError("", "Failed to create user due to server error");
+                return Page();
             }
         }
 
