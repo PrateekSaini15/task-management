@@ -112,8 +112,8 @@ To update an existing user in the system.
 |------------|--------|-------------------------------|
 | First Name | String | Required                      |
 | Last Name  | String |                               |
-| Username   | String | Required, Unique              |
-| Email      | String | Required, Unique, Valid Email |
+| Username   | String | Disabled                      |
+| Email      | String | Disabled                      |
 
 ### Flow
 1. From user list screen click on the edit icon in front of the user.
