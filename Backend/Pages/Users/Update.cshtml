@@ -1,0 +1,47 @@
+@page "{id:int}"
+@model Pages.Users.UpdateModel
+
+<div class="form-page-container">
+  <section class="page-header">
+    <div class="page-header__heading">
+      <h1>Update User</h1>
+    </div>
+    <div class="page-header__actions">
+      <a href="/users">Back</a>
+    </div>
+  </section>
+  <section>
+    <form method="post" id="UpdateUserForm" novalidate class="stack">
+      <p> Please complete all required (*) fields </p>
+      <div >
+        <label asp-for="FirstName" class="form-label">First Name *:</label>
+        <input type="text" asp-for="FirstName" class="form-control" />
+        <p id="FirstNameError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "FirstName")
+      </div>
+      
+      <div >
+        <label asp-for="LastName" class="form-label">Last Name:</label>
+        <input type="text" asp-for="LastName" class="form-control" />
+        <p id="LastNameError" class="invalid-feedback"></p>
+        @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "LastName")
+      </div>
+
+      <div >
+        <label asp-for="Email" class="form-label">Email:</label>
+        <input type="email" asp-for="Email" class="form-control" readonly />
+      </div>
+
+      <div >
+        <label asp-for="Username" class="form-label">Username:</label>
+        <input type="text" autocomplete="username" asp-for="Username" class="form-control" readonly />
+      </div>
+
+      <section>
+        <div>
+          <button type="submit" class="button button-primary">Update User</button>
+        </div>
+      </section>
+    </form>
+  </section>
+</div>
