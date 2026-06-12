@@ -14,42 +14,42 @@
   <section>
     <form method="post" id="CreateUserForm" novalidate class="stack">
       <p> Please complete all required (*) fields </p>
-      <div >
+      <div>
         <label asp-for="FirstName" class="form-label">First Name *:</label>
         <input type="text" asp-for="FirstName" class="form-control" />
         <p id="FirstNameError" class="invalid-feedback"></p>
         @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "FirstName")
       </div>
       
-      <div >
+      <div>
         <label asp-for="LastName" class="form-label">Last Name:</label>
         <input type="text" asp-for="LastName" class="form-control" />
         <p id="LastNameError" class="invalid-feedback"></p>
         @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "LastName")
       </div>
 
-      <div >
+      <div>
         <label asp-for="Email" class="form-label">Email *:</label>
         <input type="email" asp-for="Email" class="form-control" />
         <p id="EmailError" class="invalid-feedback"></p>
         @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Email")
       </div>
 
-      <div >
+      <div>
         <label asp-for="Username" class="form-label">Username *:</label>
         <input type="text" autocomplete="username" asp-for="Username" class="form-control" />
         <p id="UsernameError" class="invalid-feedback"></p>
         @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Username")
       </div>
       
-      <div >
+      <div>
         <label asp-for="Password" class="form-lable">Password *: </label>
         <input type="password" autocomplete="new-password" asp-for="Password" class="form-control" />
         <p id="PasswordError" class="invalid-feedback"></p>
         @await Html.PartialAsync("/Pages/Shared/_ValidationErrors.cshtml", "Password")
       </div>
 
-      <div >
+      <div>
         <label asp-for="ConfirmPassword" class="form-label">Confirm Password *: </label>
         <input type="password" autocomplete="new-password" asp-for="ConfirmPassword" class="form-control" />
         <p id="ConfirmPasswordError" class="invalid-feedback"></p>

@@ -2,6 +2,10 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 function setFieldState(fieldElement, errorElement, errorMessage) {
+  if (errorElement === null || errorElement === undefined) {
+    return;
+  }
+
   if (errorMessage !== null) {
     fieldElement.classList.add("invalid");
     fieldElement.classList.remove("valid");

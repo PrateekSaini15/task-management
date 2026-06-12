@@ -1,0 +1,39 @@
+﻿@{
+  int index = 0;
+  int.TryParse(ViewData["index"]?.ToString(), out index);
+
+  string memberId = $"MemberId-{index}";
+  string roleId = $"RoleId-{index}";
+}
+
+<tr>
+  <td class="px-2">
+    <div class="form-group">
+      <select name="MemberId" required class="form-select">
+        <option value="">--Select Member--</option>
+        @foreach(var member in Model.Members)
+        {
+          <option value="@member.Value">@member.Text</option>
+        }
+      </select>
+      <p class="invalid-feedback"></p>
+    </div>
+  </td>
+
+  <td class="px-2">
+    <div class="form-group">
+      <select name="RoleId" required class="form-select">
+        <option value="">--Select Role--</option>
+        @foreach(var role in Model.Roles)
+        {
+          <option value="@role.Value">@role.Text</option>
+        }
+      </select>
+      <p class="invalid-feedback"></p>
+    </div>
+  </td>
+
+  <td class="text-center">
+    <button type="button" id="RemoveButton" class="button button-outline-danger">Remove</button>
+  </td>
+</tr>
