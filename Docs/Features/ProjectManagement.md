@@ -15,7 +15,7 @@ The project management module allow users to:
 | Column         | DataType | Required | Constraint           |
 |----------------|----------|----------|----------------------|
 | Id             | Int      | Yes      | Primary Key          |
-| Name           | Varchar  | Yes      |                      |
+| Name           | Varchar  | Yes      | Unique               |
 | StatusId       | Int      | Yes      | FK ProjectStatus(Id) |
 | IsDeleted      | Boolean  | Yes      |                      |
 | CreatedBy      | Int      | Yes      |                      |
@@ -39,6 +39,12 @@ The project management module allow users to:
 | CreatedDate  | DateTime | Yes      |                    |
 | ModifiedBy   | Int      | No       |                    |
 | ModifiedDate | DateTime | No       |                    |
+
+### Table: ProjectRole
+| Column | DataType     | Required | Constraint |
+|--------|--------------|----------|------------|
+| Id     | Int          | Yes      | PK         |
+| Name   | Varchar(100) | Yes      |            |
 
 ## Status State
 | Status      | Description | Next Possible Status | Previous Possible Status |
